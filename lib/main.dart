@@ -1,6 +1,6 @@
+import 'package:clubz/sendimg.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import './sendimg.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,35 +12,34 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _googleSignIn = GoogleSignIn();
-  GoogleSignInAccount? data;
-
-  void login() async {
-    data = await _googleSignIn.signIn();
-    print(data);
-  }
-
-  void signout() {
-    _googleSignIn.signOut();
+  void changescreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ImageUpload()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                child: Text('Press me Daddy'),
-                onPressed: login,
-              ),
-              ElevatedButton(
-                child: Text('No no, Press me Daddy'),
-                onPressed: signout,
-              ),
-            ],
+      home: Builder(
+        builder: (context) => Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  child: Text('Press me Daddy'),
+                  onPressed: () {},
+                ),
+                ElevatedButton(
+                  child: Text('No no, Press me Daddy'),
+                  onPressed: () {
+                    changescreen(context);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

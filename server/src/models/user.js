@@ -29,18 +29,20 @@ const userSchema = mongoose.Schema({
   College: {
     type: String,
     required: true,
-    trim: true,
   },
   Gender: {
     type: String,
     enum: ['Man','Woman','Non-Binary'],
-    required: true,
   },
   Username: {
     type: String,
     required: true,
     trim: true,
   },
+  profilepic:{
+    data: Buffer,
+    contentType: String,
+  }
 });
 
 const User = mongoose.model("User", userSchema);
