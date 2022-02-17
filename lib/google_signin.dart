@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:clubz/sendimg.dart';
 
-class GoogleSignIn extends StatelessWidget {
+class GoogleAuth extends StatelessWidget {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? data;
+  late bool isSignedin;
 
-  void login() async {
+  void login(BuildContext context) async {
     data = await _googleSignIn.signIn();
-    print(data);
+    Navigator.of(context).pushNamed(ImageUpload.routename,
+        arguments: {'name': data!.displayName, 'email': data!.email});
   }
 
   void signout() {
@@ -16,6 +19,21 @@ class GoogleSignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        ElevatedButton(
+          child: Text('Press me Daddy'),
+          onPressed: () {
+            login(context);
+          },
+        ),
+        ElevatedButton(
+          child: Text('Bye Bye Daddy'),
+          onPressed: () {
+            signout();
+          },
+        ),
+      ],
+    );
   }
 }

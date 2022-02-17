@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-var validator = require("email-validator");
+const validator = require("email-validator");
+const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
   name: {
@@ -18,7 +19,6 @@ const userSchema = mongoose.Schema({
   },
   age: {
     type: Number,
-    default: 0,
     validate: function (value) {
       if (value < 15) {
         throw new Error("Age must be over 15");
@@ -26,24 +26,38 @@ const userSchema = mongoose.Schema({
       return true;
     },
   },
-  College: {
+  college: {
     type: String,
-    required: true,
   },
-  Gender: {
+  gender: {
     type: String,
-    enum: ['Man','Woman','Non-Binary'],
+    enum: ["Man", "Woman", "Non-Binary"],
   },
-  Username: {
+  username: {
     type: String,
     required: true,
     trim: true,
   },
-  profilepic:{
-    data: Buffer,
-    contentType: String,
-  }
+  profilepic: {
+    type: Buffer,
+  },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
+
+userSchema.methods.generateAuthToken = async function() { 
+  const user = this
+  const token = jwt.sign({_id: user._id.toString()}, 'hehehe')
+  user.tokens = user.tokens.concat({ token })
+  await user.save()
+  return token
+}
 
 const User = mongoose.model("User", userSchema);
 

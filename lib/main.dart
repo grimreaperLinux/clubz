@@ -1,3 +1,5 @@
+import 'package:clubz/google_signin.dart';
+import 'package:clubz/homepage.dart';
 import 'package:clubz/sendimg.dart';
 import 'package:flutter/material.dart';
 import './sendimg.dart';
@@ -12,37 +14,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  void changescreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ImageUpload()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Builder(
-        builder: (context) => Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  child: Text('Press me Daddy'),
-                  onPressed: () {},
-                ),
-                ElevatedButton(
-                  child: Text('No no, Press me Daddy'),
-                  onPressed: () {
-                    changescreen(context);
-                  },
-                ),
-              ],
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Center(
+                child: GoogleAuth(),
+              ),
             ),
           ),
         ),
-      ),
-    );
+        routes: {ImageUpload.routename: (ctx) => ImageUpload()});
   }
 }

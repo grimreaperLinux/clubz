@@ -10,8 +10,12 @@ router.post('/', async function (req, res) {
     res.send('Fucking did it!!!!!!')
 })
 
-router.post('/uploadimg', multer().single('myFile'),async function(req, res){
-    console.log(req.file)
+router.post('/newuser', multer().single('myFile'),async function(req, res){
+    const user = new User({...req.body, profilepic: req.file.buffer})
+    const token = await user.generateAuthToken()
+    await user.save()
+    console.log(user)
+    res.send({user, token})
     res.status(200)
 })
 

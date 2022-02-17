@@ -1,83 +1,126 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:dio/dio.dart';
 import 'dart:async';
-import 'package:async/async.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 
 class ImageUpload extends StatefulWidget {
   @override
   _ImageUploadState createState() => _ImageUploadState();
+  static const routename = '/userReg';
 }
 
 class _ImageUploadState extends State<ImageUpload> {
-  late File _image;
+  late XFile _image;
   final picker = ImagePicker();
 
   Future<void> getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        _image = pickedFile;
       } else {
         print('No image selected.');
       }
     });
   }
 
-  upload(File imageFile) async {
-    // open a bytestream
-    var stream =
-        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-    // get file length
-    var length = await imageFile.length();
+  ImageProvider? picture;
+  bool isrecieved = false;
+  ImageProvider picture = isrecieved ? picture : Image.network('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg')
 
-    // string to uri
-    var uri = Uri.parse("http://192.168.0.121:3000/uploadimg");
+  upload(XFile imageFile, String username, String name, String email) async {
+    var uri = "http://192.168.0.121:3000/newuser";
+    String fileName = imageFile.path.split('/').last;
 
-    // create multipart request
-    var request = new http.MultipartRequest("POST", uri);
-
-    // multipart that takes file
-    var multipartFile = new http.MultipartFile('myFile', stream, length,
-        filename: basename(imageFile.path));
-
-    // add file to multipart
-    request.files.add(multipartFile);
-
-    // send
-    var response = await request.send();
-    print(response.statusCode);
-
-    // listen for response
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
+    FormData data = FormData.fromMap({
+      'name': name,
+      'email': email,
+      'username': username,
+      "myFile": await MultipartFile.fromFile(
+        imageFile.path,
+        filename: fileName,
+      ),
     });
+
+    Dio dio = new Dio();
+
+    dio.post(uri, data: data).then((response) {
+      var jsonResponse = jsonDecode(response.toString());
+      setState(() {
+        isrecieved = true;
+        picture = jsonResponse['user'].profilepic;
+      });
+    }).catchError((error) => print(error));
   }
+
+  final usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final routeArgs =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
+    final name = routeArgs['name'];
+    final email = routeArgs['email'];
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          Text("Select an image"),
-          FlatButton.icon(
-              onPressed: () async => await getImage(),
-              icon: Icon(Icons.upload_file),
-              label: Text("Browse")),
-          SizedBox(
-            height: 20,
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Center(
+          child: Column(
+            children: [
+              const Text("Select an image"),
+              ElevatedButton.icon(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.green)),
+                onPressed: () async => await getImage(),
+                icon: const Icon(Icons.upload_file),
+                label: const Text("Browse"),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  decoration: const InputDecoration(labelText: 'username'),
+                  // onChanged: (value) {
+                  //   titleInput = value;
+                  // },
+                  controller: usernameController,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton.icon(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.green)),
+                onPressed: () => upload(_image, usernameController.text,
+                    name as String, email as String),
+                icon: const Icon(Icons.upload_rounded),
+                label: const Text("Save to ze database"),
+              ),
+              SizedBox(
+                height: 200,
+              ),
+              Container(
+                height: 300,
+                width: 200,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: Image.network('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: null /* add child content here */,
+              ),
+            ],
           ),
-          FlatButton.icon(
-              onPressed: () => upload(_image),
-              icon: Icon(Icons.upload_rounded),
-              label: Text("Upload now")),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 }
