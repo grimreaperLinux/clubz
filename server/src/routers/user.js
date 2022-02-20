@@ -14,8 +14,12 @@ router.post('/newuser', multer().single('myFile'),async function(req, res){
     const user = new User({...req.body, profilepic: req.file.buffer})
     const token = await user.generateAuthToken()
     await user.save()
+    const response = {
+        token: token,
+        user: user
+    }
     console.log(user)
-    res.send({user, token})
+    res.send(response)
     res.status(200)
 })
 
