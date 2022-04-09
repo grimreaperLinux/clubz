@@ -6,11 +6,16 @@ class GoogleAuth extends StatelessWidget {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? data;
   late bool isSignedin;
+  final Function signedIn;
+
+  GoogleAuth(this.signedIn);
 
   void login(BuildContext context) async {
     data = await _googleSignIn.signIn();
     Navigator.of(context).pushNamed(ImageUpload.routename,
         arguments: {'name': data!.displayName, 'email': data!.email});
+    isSignedin = true;
+    signedIn(isSignedin);
   }
 
   void signout() {

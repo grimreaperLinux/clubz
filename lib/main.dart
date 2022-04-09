@@ -3,9 +3,10 @@ import 'package:clubz/homepage.dart';
 import 'package:clubz/sendimg.dart';
 import 'package:flutter/material.dart';
 import './sendimg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(home: Homepage()));
 }
 
 class MyApp extends StatefulWidget {
@@ -14,6 +15,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool isSignedin = false;
+
+  void signedin(bool value) async {
+    isSignedin = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isloggedIn', true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +31,7 @@ class _MyAppState extends State<MyApp> {
             body: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Center(
-                child: GoogleAuth(),
+                child: GoogleAuth(signedin),
               ),
             ),
           ),

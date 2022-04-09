@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
     unique: true,
     validate: function (value) {
       if (!validator.validate(value))
-        throw new Error("Fuck this email. I want new one");
+        throw new Error("Wrong email. I want new one");
       return true;
     },
   },

@@ -1,3 +1,4 @@
+import './widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
@@ -6,6 +7,7 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavBar(),
       body: Center(
         child: Text('This is ze homepage'),
       ),
