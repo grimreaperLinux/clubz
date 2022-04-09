@@ -1,12 +1,13 @@
 import 'package:clubz/google_signin.dart';
 import 'package:clubz/homepage.dart';
+import 'package:clubz/screens/posts_screen.dart';
 import 'package:clubz/sendimg.dart';
 import 'package:flutter/material.dart';
 import './sendimg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MaterialApp(home: Homepage()));
+  runApp(MaterialApp(home: PostsScreen()));
 }
 
 class MyApp extends StatefulWidget {
