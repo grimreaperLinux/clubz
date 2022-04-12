@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
-
+  static const routename = '/homepage';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(),
       body: Center(
         child: Text('This is ze homepage'),
       ),

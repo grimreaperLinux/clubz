@@ -1,9 +1,15 @@
+import 'package:clubz/homepage.dart';
+import 'package:clubz/screens/announcements_screen.dart';
+import 'package:clubz/screens/posts_screen.dart';
+import 'package:clubz/widgets/announcement.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
+  final Function screenvalue;
+  BottomNavBar(this.screenvalue);
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
@@ -15,10 +21,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
       padding: const EdgeInsets.all(8.0),
       child: CustomNavigationBar(
         iconSize: 30.0,
-        selectedColor: Colors.black87,
-        strokeColor: Colors.white,
-        unSelectedColor: Colors.black38,
-        backgroundColor: Colors.white,
+        selectedColor: Colors.white,
+        strokeColor: Colors.black,
+        unSelectedColor: Colors.white54,
+        backgroundColor: Colors.black,
         borderRadius: const Radius.circular(20.0),
         items: [
           CustomNavigationBarItem(
@@ -41,6 +47,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         onTap: (index) {
           setState(() {
             _currentIndex = index;
+            widget.screenvalue(_currentIndex);
           });
         },
       ),

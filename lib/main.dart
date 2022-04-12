@@ -1,13 +1,12 @@
-import 'package:clubz/google_signin.dart';
 import 'package:clubz/homepage.dart';
+import 'package:clubz/screens/announcements_screen.dart';
 import 'package:clubz/screens/posts_screen.dart';
-import 'package:clubz/sendimg.dart';
+import 'package:clubz/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import './sendimg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MaterialApp(home: PostsScreen()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -16,27 +15,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isSignedin = false;
+  List<Widget> screens = [
+    Homepage(),
+    PostsScreen(),
+    AnnouncementScreen(),
+  ];
 
-  void signedin(bool value) async {
-    isSignedin = value;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isloggedIn', true);
+  int index = 0;
+
+  void changescreen(value) {
+    setState(() {
+      index = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Builder(
-          builder: (context) => Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Center(
-                child: GoogleAuth(signedin),
-              ),
-            ),
-          ),
-        ),
-        routes: {ImageUpload.routename: (ctx) => ImageUpload()});
+      home: Scaffold(
+        body: screens[index],
+        bottomNavigationBar: BottomNavBar(changescreen),
+      ),
+      routes: {
+        Homepage.routename: (context) => Homepage(),
+        PostsScreen.routename: (context) => PostsScreen(),
+        AnnouncementScreen.routename: (context) => AnnouncementScreen()
+      },
+    );
   }
 }
