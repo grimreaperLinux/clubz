@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  expandable_text: 2.3.0  # Added by YS
   
   google_sign_in: ^5.2.3 
   http: ^0.13.4
@@ -70,6 +72,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - images/
     - assets/profilepic.jpg
   #   - images/a_dot_ham.jpeg
 
