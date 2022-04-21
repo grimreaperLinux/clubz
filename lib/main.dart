@@ -4,6 +4,7 @@ import 'package:clubz/screens/posts_screen.dart';
 import 'package:clubz/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'club_profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,8 @@ class _MyAppState extends State<MyApp> {
     Homepage(),
     PostsScreen(),
     AnnouncementScreen(),
+    //Club_profile(),
+    //
   ];
 
   int index = 0;

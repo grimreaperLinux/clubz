@@ -1,5 +1,6 @@
 import './widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'club_profile.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -87,7 +88,8 @@ class Homepage extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(0, 0, 00, 0),
                         child: ClipRRect(
                           child: Image.network(
-                              'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'),
+                              'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+                              ),
                           borderRadius: BorderRadius.all(
                             Radius.circular(12),
                           ),
@@ -125,14 +127,23 @@ class Homepage extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                      child: ClipRRect(
-                        child: Image.asset(
-                          'images/irisB.jpeg',
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
+          //Gesture datector
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Club_profile()),);
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 250),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                          child: ClipRRect(
+                            child: Image.asset(
+                              'images/irisB.jpeg',
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -206,8 +217,9 @@ class Homepage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: ClipRRect(
-                        child: Image.network(
-                                'https://media.istockphoto.com/photos/business-man-pushing-large-stone-up-to-hill-business-heavy-tasks-and-picture-id825383494?k=20&m=825383494&s=612x612&w=0&h=tEqZ5HFZcM3lmDm_cmI7hOeceiqy9gYrkyLTTkrXdY4='
+                        child: Image.asset(
+                          'images/velo.jpeg'
+                                //'https://media.istockphoto.com/photos/business-man-pushing-large-stone-up-to-hill-business-heavy-tasks-and-picture-id825383494?k=20&m=825383494&s=612x612&w=0&h=tEqZ5HFZcM3lmDm_cmI7hOeceiqy9gYrkyLTTkrXdY4='
                             ),
                         borderRadius: BorderRadius.all(
                           Radius.circular(12),

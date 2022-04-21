@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  expandable_text: 2.3.0  # Added by YS
   
   google_sign_in: ^5.2.3 
   http: ^0.13.4
