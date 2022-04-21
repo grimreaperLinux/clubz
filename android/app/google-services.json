@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "98322273582",
+    "project_id": "clubzserver",
+    "storage_bucket": "clubzserver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98322273582:android:a02ca65dcbb23514c4d6bf",
+        "android_client_info": {
+          "package_name": "com.example.clubz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98322273582-p5ksev7lvae5l15qkvfkg82lnpl46koh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD8BuQIYRkYMiVPU1O93kTkrtQVTotC7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98322273582-p5ksev7lvae5l15qkvfkg82lnpl46koh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
