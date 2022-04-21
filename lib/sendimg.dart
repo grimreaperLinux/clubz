@@ -50,9 +50,9 @@ class _ImageUploadState extends State<ImageUpload> {
       var jsonResponse = response.data;
       var decoded = jsonDecode(jsonResponse);
       print(decoded);
-      var usersigned = User.fromJson(decoded);
-      print(usersigned.name);
-      print(usersigned.username);
+      // var usersigned = User.fromJson(decoded);
+      // print(usersigned.name);
+      // print(usersigned.username);
 
       setState(() {});
     }).catchError((error) => print(error));
