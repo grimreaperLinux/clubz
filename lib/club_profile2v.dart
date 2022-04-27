@@ -1,5 +1,3 @@
-//import 'dart:ffi';
-
 import 'package:clubz/widgets/club_desc2.dart';
 import 'package:expandable_text/expandable_text.dart';
 
@@ -8,16 +6,16 @@ import 'package:clubz/widgets/club_description.dart';
 import 'package:flutter/material.dart';
 
 
-class Club_profile extends StatefulWidget {
-  const Club_profile({Key? key}) : super(key: key);
+class Club_profile2v extends StatefulWidget {
+  const Club_profile2v({Key? key}) : super(key: key);
 
   
 
   @override
-  State<Club_profile> createState() => _Club_profileState();
+  State<Club_profile2v> createState() => _Club_profileState();
 }
 
-class _Club_profileState extends State<Club_profile> {
+class _Club_profileState extends State<Club_profile2v> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +51,8 @@ class _Club_profileState extends State<Club_profile> {
                           borderRadius: BorderRadius.all(Radius.circular(12))),
                       elevation: 8.0,
                       child: ClipRRect(
-                        child: Image.asset('images/irisB.jpeg'),
+                        child: Image.network('https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'),
+
                         borderRadius: BorderRadius.all(
                           Radius.circular(12),
                         ),
@@ -71,14 +70,14 @@ class _Club_profileState extends State<Club_profile> {
                         Row(
                           //mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: 190,),
+                          SizedBox(width: 140,),
                           Text(
-                              'Iris',
+                              'DSAI Society',
                               style: TextStyle(
-                                fontSize: 30,
+                                fontSize: 25,
                               ),
                             ),
-                          SizedBox(width: 80,),
+                          SizedBox(width: 40,),
                           IconButton(
                                     onPressed: () {},
                                     icon: Icon(Icons.people_alt_outlined),
@@ -98,10 +97,10 @@ class _Club_profileState extends State<Club_profile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: 25,
+                              width: 20,
                             ),
                             Text(
-                              'Robotics Club',
+                              'Data science Club',
                               //textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Color.fromARGB(255, 68, 68, 68),
@@ -123,7 +122,7 @@ class _Club_profileState extends State<Club_profile> {
             //club_desc(),
             Padding(
               padding: const EdgeInsets.all(30.0),
-              child: Container(child: Center(child: Text('Iris is the robotics club regulated within Indian Institute Of Information Technology Dharwad. It is managed by club members and constantly guided by faculty Mr/Ms ...So anyone who is AI enthusiast can join the club ')),),
+              child: Container(child: Center(child: Text('DSAI Society is the data science club regulated within Indian Institute Of Information Technology Dharwad. It is managed by club members and constantly guided by faculty Mr/Ms ...So anyone who is data enthusiast can join the club ')),),
             ),
 
             //ClubDesc(),
@@ -134,7 +133,7 @@ class _Club_profileState extends State<Club_profile> {
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Text(
-                    'Join ze club',
+                    'Join the club',
                     style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                   ),
                   style: ElevatedButton.styleFrom(

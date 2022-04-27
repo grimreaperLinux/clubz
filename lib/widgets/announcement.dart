@@ -16,18 +16,41 @@ class AnnouncementCard extends StatelessWidget {
           padding: EdgeInsets.all(10.0),
           child: Column(
             children: [
-              Align(
+              Row(children: [
+                CircleAvatar(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  radius: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Image.asset('images/irisB.jpeg'),
+                  )
+
+
+                  //foregroundImage: Image(Image.asset('images/irisB.jpeg')),
+                  //child: Align(
+                    
+                  //  child: Image.asset('images/irisB.jpeg')),
+                  
+                ),
+
+                SizedBox(width: 10,),
+
+                Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'A club name',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
+
+              ]),
+              
               SizedBox(
                 height: 10,
               ),
               Text(
-                'The announcement about some dumb shit and very annoying shit and dajhfuigfuihfuha fuqugd uqguigfuagaafugaudgasudfdgauifgaufuiahfuigfudfud',
+                'The announcement about some club event and very urgent notices and dajhfuigfuihfuha fuqugd uqguigfuagaafugaudgasudfdgauifgaufuiahfuigfudfud',
               ),
             ],
           ),
