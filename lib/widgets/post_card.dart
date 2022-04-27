@@ -1,8 +1,11 @@
+import 'package:clubz/models/post.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final post = Provider.of<Post>(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: Card(
@@ -24,7 +27,7 @@ class PostCard extends StatelessWidget {
                   radius: 20,
                 ),
                 title: Text('A User'),
-                subtitle: Text('Ze user location'),
+                subtitle: Text(post.location),
                 trailing: IconButton(
                   iconSize: 35.0,
                   icon: Icon(Icons.bookmark_add_outlined),
@@ -34,13 +37,16 @@ class PostCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: ClipRRect(
-                child: Image.network(
-                  'https://media.istockphoto.com/photos/business-man-pushing-large-stone-up-to-hill-business-heavy-tasks-and-picture-id825383494?k=20&m=825383494&s=612x612&w=0&h=tEqZ5HFZcM3lmDm_cmI7hOeceiqy9gYrkyLTTkrXdY4=',
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
+              child: Container(
+                height: 400,
+                child: ClipRRect(
+                  child: Image.network(
+                    post.postpic,
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
                 ),
               ),
             ),
@@ -70,7 +76,7 @@ class PostCard extends StatelessWidget {
                   SizedBox(
                     width: 5,
                   ),
-                  Text('Some shitty Caption'),
+                  Text(post.caption),
                 ],
               ),
             )

@@ -1,7 +1,3 @@
-import 'package:clubz/homepage.dart';
-import 'package:clubz/screens/announcements_screen.dart';
-import 'package:clubz/screens/posts_screen.dart';
-import 'package:clubz/widgets/announcement.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 

@@ -5,8 +5,25 @@ import 'package:flutter/material.dart';
 import '../widgets/alertdialogforzeform.dart';
 import 'package:provider/provider.dart';
 
-class PostsScreen extends StatelessWidget {
+class PostsScreen extends StatefulWidget {
   static const routename = '/posts';
+
+  @override
+  State<PostsScreen> createState() => _PostsScreenState();
+}
+
+class _PostsScreenState extends State<PostsScreen> {
+  var _isinit = true;
+
+  @override
+  void didChangeDependencies() {
+    var posts = Provider.of<PostList>(context);
+    if (_isinit && posts.items.isEmpty) {
+      Provider.of<PostList>(context).getposts();
+    }
+    _isinit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +64,6 @@ class PostsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            PostCard(),
             posts.items.isEmpty
                 ? const Center(
                     child: Text(
@@ -55,10 +71,16 @@ class PostsScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 20),
                     ),
                   )
-                : ListView.builder(
-                    itemCount: posts.items.length,
-                    itemBuilder: ((context, index) => PostCard()),
-                  ),
+                : Column(
+                    children: [
+                      ...posts.items.map(
+                        (item) => ChangeNotifierProvider.value(
+                          value: item,
+                          child: PostCard(),
+                        ),
+                      ),
+                    ],
+                  )
           ],
         ),
       ),

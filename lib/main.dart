@@ -1,13 +1,13 @@
-import 'package:clubz/homepage.dart';
-import 'package:clubz/models/post.dart';
-import 'package:clubz/screens/announcements_screen.dart';
-import 'package:clubz/screens/posts_screen.dart';
-import 'package:clubz/widgets/bottom_navigation_bar.dart';
+import './screens/homepage.dart';
+import './models/post.dart';
+import './screens/announcements_screen.dart';
+import './screens/posts_screen.dart';
+import './widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
-import 'club_profile.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,16 +47,22 @@ class _MyAppState extends State<MyApp> {
           create: (_) => PostList(),
         )
       ],
-      child: MaterialApp(
-        home: Scaffold(
-          body: screens[index],
-          bottomNavigationBar: BottomNavBar(changescreen),
+      child: ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            body: screens[index],
+            bottomNavigationBar: BottomNavBar(changescreen),
+          ),
+          routes: {
+            Homepage.routename: (context) => Homepage(),
+            PostsScreen.routename: (context) => PostsScreen(),
+            AnnouncementScreen.routename: (context) => AnnouncementScreen()
+          },
         ),
-        routes: {
-          Homepage.routename: (context) => Homepage(),
-          PostsScreen.routename: (context) => PostsScreen(),
-          AnnouncementScreen.routename: (context) => AnnouncementScreen()
-        },
       ),
     );
   }

@@ -1,7 +1,8 @@
+import 'package:clubz/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '../helpers/postroutes.dart';
+import 'package:provider/provider.dart';
 
 class AlertForZeForm extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
   final _form = GlobalKey<FormState>();
   final caption = TextEditingController();
   final location = TextEditingController();
+  bool _isloading = false;
 
   Widget _createwidget(String text, TextEditingController name) {
     return Container(
@@ -117,6 +119,7 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
 
   @override
   Widget build(BuildContext context) {
+    final postlist = Provider.of<PostList>(context);
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -124,105 +127,130 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
       content: Container(
         height: MediaQuery.of(context).size.height * 0.5,
         width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: _isloading
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Create Your Post',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                  ),
+                  const CircularProgressIndicator(),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
-                  Form(
+                  const Text('Creating your post'),
+                ],
+              )
+            : Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.green,
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: ((
-                                  builder,
-                                ) =>
-                                    bottomSheet(context)),
-                              );
-                            },
-                            child: _imageFile == null
-                                ? const Center(
-                                    child: Text(
-                                      'Select an Image',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                        image: FileImage(
-                                          File(_imageFile!.path),
+                        const Text(
+                          'Create Your Post',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 30),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                        ),
+                        Form(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.green,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: ((
+                                        builder,
+                                      ) =>
+                                          bottomSheet(context)),
+                                    );
+                                  },
+                                  child: _imageFile == null
+                                      ? const Center(
+                                          child: Text(
+                                            'Select an Image',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              image: FileImage(
+                                                File(_imageFile!.path),
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
+                              ),
+                              _createwidget('Ze Caption', caption),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
+                              ),
+                              _createwidget('Location', location),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    _isloading = true;
+                                  });
+                                  await postlist
+                                      .addpost(_imageFile, caption.text,
+                                          location.text)
+                                      .then((_) {
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                child: const Text('Submit'),
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  )),
+                                  elevation: MaterialStateProperty.all(10.0),
+                                  shadowColor:
+                                      MaterialStateProperty.all(Colors.black),
+                                  padding: MaterialStateProperty.all(
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 20)),
+                                  minimumSize: MaterialStateProperty.all(
+                                      const Size(150, 40)),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03,
-                        ),
-                        _createwidget('Ze Caption', caption),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03,
-                        ),
-                        _createwidget('Location', location),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03,
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await PostRoutes().uploadFile(
-                                _imageFile, caption.text, location.text);
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text('Submit'),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            )),
-                            elevation: MaterialStateProperty.all(10.0),
-                            shadowColor:
-                                MaterialStateProperty.all(Colors.black),
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(horizontal: 20)),
-                            minimumSize:
-                                MaterialStateProperty.all(const Size(150, 40)),
-                          ),
-                        ),
+                        )
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
