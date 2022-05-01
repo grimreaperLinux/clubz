@@ -12,6 +12,9 @@ const postSchema = mongoose.Schema({
     postpic: {
         type: String,
     },
+    imageLocOnCloud: {
+        type: String,
+    }
 })
 
 const Post = mongoose.model("Post", postSchema);

@@ -1,3 +1,6 @@
+import 'package:clubz/screens/details_screen/details_screen.dart';
+import 'package:clubz/screens/settings.dart';
+
 import './screens/homepage.dart';
 import './models/post.dart';
 import './screens/announcements_screen.dart';
@@ -60,7 +63,9 @@ class _MyAppState extends State<MyApp> {
           routes: {
             Homepage.routename: (context) => Homepage(),
             PostsScreen.routename: (context) => PostsScreen(),
-            AnnouncementScreen.routename: (context) => AnnouncementScreen()
+            AnnouncementScreen.routename: (context) => AnnouncementScreen(),
+            DetailsScreen.routename: (context) => DetailsScreen(),
+            Settings.routeName: (context) => Settings(),
           },
         ),
       ),

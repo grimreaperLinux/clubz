@@ -1,7 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 
 import 'package:clubz/widgets/post_card.dart';
-import 'package:clubz/widgets/club_description.dart';
+
 import 'package:flutter/material.dart';
 
 class Club_profile extends StatefulWidget {
@@ -140,7 +140,6 @@ class _Club_profileState extends State<Club_profile> {
                   ),
                 ],
               ),
-              club_desc(),
 
               //SizedBox(height: 15,),
               Container(

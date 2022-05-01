@@ -27,7 +27,7 @@ class AnnouncementCard extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'The announcement about some dumb shit and very annoying shit and dajhfuigfuihfuha fuqugd uqguigfuagaafugaudgasudfdgauifgaufuiahfuigfudfud',
+                'The announcement about some dumb shit and very annoying shit and we ndvkjnkndknkdnkvnkd uqguigfuagaafugaudgasudfdgauifgaufuiahfuigfudfud',
               ),
             ],
           ),

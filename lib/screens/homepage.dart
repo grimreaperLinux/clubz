@@ -1,3 +1,4 @@
+import 'package:clubz/screens/settings.dart';
 import 'package:clubz/widgets/clubitem.dart';
 import 'package:flutter/material.dart';
 import 'club_profile.dart';
@@ -69,7 +70,7 @@ class Homepage extends StatelessWidget {
           backgroundColor: Colors.green,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10).r,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20).r,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -83,8 +84,10 @@ class Homepage extends StatelessWidget {
                     ),
                     IconButton(
                       iconSize: 25.r,
-                      onPressed: () {},
-                      icon: const Icon(Icons.account_circle_rounded),
+                      onPressed: () {
+                        Navigator.pushNamed(context, Settings.routeName);
+                      },
+                      icon: const Icon(Icons.settings),
                     )
                   ],
                 ),

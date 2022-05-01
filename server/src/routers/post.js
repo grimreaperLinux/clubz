@@ -20,4 +20,26 @@ router.get("/getposts", async function (req, res) {
     }
 })
 
+router.patch("/updatepost/:id", async function (req, res) {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['location', 'caption', 'imageLocOnCloud', 'postpic']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid updates!' })
+    }
+
+    let post = await Post.findById(req.params.id)
+    updates.forEach((update) =>  post[update] = req.body[update]) 
+    await post.save()
+    console.log(post)
+    res.send(post)
+})
+
+router.delete("/deletepost/:id", async (req, res) => {
+    const postid = req.params.id
+    await Post.deleteOne({_id: postid})
+    res.status(200)
+})
+
 module.exports = router;

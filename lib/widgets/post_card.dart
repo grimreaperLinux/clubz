@@ -1,8 +1,36 @@
 import 'package:clubz/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './alertdialogforzeform.dart';
 
 class PostCard extends StatelessWidget {
+  bool _forEdit = true;
+  void selectedItem(item, Post post, BuildContext context) async {
+    switch (item) {
+      case 0:
+        print('Save initiated');
+        break;
+      case 1:
+        {
+          void openForm() {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ChangeNotifierProvider.value(
+                  value: post, child: AlertForZeForm(_forEdit)),
+            );
+          }
+
+          openForm();
+        }
+        break;
+      case 2:
+        {
+          await Provider.of<PostList>(context, listen: false)
+              .deleteProduct(post.id);
+        }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final post = Provider.of<Post>(context);
@@ -28,10 +56,24 @@ class PostCard extends StatelessWidget {
                 ),
                 title: Text('A User'),
                 subtitle: Text(post.location),
-                trailing: IconButton(
-                  iconSize: 35.0,
-                  icon: Icon(Icons.bookmark_add_outlined),
-                  onPressed: null,
+                trailing: PopupMenuButton(
+                  itemBuilder: ((context) => [
+                        PopupMenuItem(
+                          child: Text('Save'),
+                          value: 0,
+                        ),
+                        PopupMenuItem(
+                          child: Text('Edit'),
+                          value: 1,
+                        ),
+                        PopupMenuItem(
+                          child: Text('Delete'),
+                          value: 2,
+                        ),
+                      ]),
+                  onSelected: (item) {
+                    selectedItem(item, post, context);
+                  },
                 ),
               ),
             ),

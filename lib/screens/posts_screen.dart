@@ -25,6 +25,7 @@ class _PostsScreenState extends State<PostsScreen> {
     super.didChangeDependencies();
   }
 
+  final toedit = false;
   @override
   Widget build(BuildContext context) {
     final posts = Provider.of<PostList>(context);
@@ -37,7 +38,7 @@ class _PostsScreenState extends State<PostsScreen> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertForZeForm();
+              return AlertForZeForm(toedit);
             },
           );
         },
