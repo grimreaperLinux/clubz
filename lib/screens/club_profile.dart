@@ -1,17 +1,17 @@
+<<<<<<< HEAD:lib/club_profile.dart
 //import 'dart:ffi';
 
 import 'package:clubz/widgets/club_desc2.dart';
+=======
+>>>>>>> fb8fd8225d4acb3849733672012167e29f0f87b7:lib/screens/club_profile.dart
 import 'package:expandable_text/expandable_text.dart';
 
 import 'package:clubz/widgets/post_card.dart';
 import 'package:clubz/widgets/club_description.dart';
 import 'package:flutter/material.dart';
 
-
 class Club_profile extends StatefulWidget {
   const Club_profile({Key? key}) : super(key: key);
-
-  
 
   @override
   State<Club_profile> createState() => _Club_profileState();
@@ -70,28 +70,56 @@ class _Club_profileState extends State<Club_profile> {
                       children: [
                         Row(
                           //mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(width: 190,),
-                          Text(
+                          children: [
+                            SizedBox(
+                              width: 190,
+                            ),
+                            Text(
                               'Iris',
                               style: TextStyle(
                                 fontSize: 30,
                               ),
                             ),
+<<<<<<< HEAD:lib/club_profile.dart
                           SizedBox(width: 80,),
                           IconButton(
                                     onPressed: () {},
                                     icon: Icon(Icons.people_alt_outlined),
                                     iconSize: 35,
+=======
+                            SizedBox(
+                              width: 80,
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.people_alt_outlined),
+                              iconSize: 35,
+                              tooltip: 'Members',
+                              color: Color.fromARGB(255, 51, 81, 97),
+                              hoverColor: Color.fromARGB(221, 113, 81, 81),
+                              //splashRadius: 100,
+                              //splashColor: Color.fromARGB(255, 0, 0, 0),
+                              //highlightColor: Color.fromARGB(254, 194, 194, 194),
+                            ),
+
+                            /*IconButton(
+                                    onPressed: () {},
+                                    icon: Image.asset('images/pngChat.png'),
+                                    iconSize: 85,
+>>>>>>> fb8fd8225d4acb3849733672012167e29f0f87b7:lib/screens/club_profile.dart
                                     tooltip: 'Members',
                                     color: Color.fromARGB(255, 51, 81, 97),
                                     hoverColor: Color.fromARGB(221, 113, 81, 81),
                                     //splashRadius: 100,
                                     //splashColor: Color.fromARGB(255, 0, 0, 0),
                                     //highlightColor: Color.fromARGB(254, 194, 194, 194),    
+<<<<<<< HEAD:lib/club_profile.dart
                               ),
         
                             
+=======
+                              ),*/
+>>>>>>> fb8fd8225d4acb3849733672012167e29f0f87b7:lib/screens/club_profile.dart
                           ],
                         ),
                         Row(
@@ -118,6 +146,7 @@ class _Club_profileState extends State<Club_profile> {
                   ),
                 ),
               ),
+<<<<<<< HEAD:lib/club_profile.dart
             
       //Club Description
             //club_desc(),
@@ -129,6 +158,24 @@ class _Club_profileState extends State<Club_profile> {
             //ClubDesc(),
              
         
+=======
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Text(
+                    'About :)',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              club_desc(),
+
+>>>>>>> fb8fd8225d4acb3849733672012167e29f0f87b7:lib/screens/club_profile.dart
               //SizedBox(height: 15,),
               Container(
                 child: ElevatedButton(
@@ -142,7 +189,7 @@ class _Club_profileState extends State<Club_profile> {
                       textStyle: TextStyle(fontSize: 20),
                       primary: Colors.blueGrey, //background
                       onPrimary: Color.fromARGB(255, 228, 228, 228) //foreground
-        
+
                       ),
                   //style: ButtonStyle(
                   //backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 83, 83, 83))),
@@ -163,15 +210,16 @@ class _Club_profileState extends State<Club_profile> {
                       textStyle: TextStyle(fontSize: 20),
                       primary: Colors.blueGrey, //background
                       onPrimary: Color.fromARGB(255, 228, 228, 228) //foreground
-        
+
                       ),
                 ),
               ),
-        
+
               SizedBox(
                 height: 30,
               ),
 
+<<<<<<< HEAD:lib/club_profile.dart
               Row(
                 children: [
                   SizedBox(width: 330,),
@@ -188,20 +236,47 @@ class _Club_profileState extends State<Club_profile> {
                     hoverColor: Color.fromARGB(221, 113, 81, 81),
                                       
               ),*/
+=======
+              IconButton(
+                onPressed: () {},
+                icon: Image.asset('images/pngChat.png'),
+                iconSize: 60,
+                tooltip: 'Chat with community',
+                color: Color.fromARGB(255, 51, 81, 97),
+                hoverColor: Color.fromARGB(221, 113, 81, 81),
+              ),
+>>>>>>> fb8fd8225d4acb3849733672012167e29f0f87b7:lib/screens/club_profile.dart
 
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
 
-              Row(children: [
-                SizedBox(width: 100,),
-                IconButton(onPressed: (){}, icon: Icon(Icons.facebook_outlined)),
-                SizedBox(width: 10,),
-                IconButton(onPressed: (){}, icon: Icon(Icons.linked_camera_outlined)),
-                SizedBox(width: 10,),
-                IconButton(onPressed: (){}, icon: Icon(Icons.web_sharp)),
-                SizedBox(width: 10,),
-                IconButton(onPressed: (){}, icon: Icon(Icons.bubble_chart_outlined)),
-              ],)
-        
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                  ),
+                  IconButton(
+                      onPressed: () {}, icon: Icon(Icons.facebook_outlined)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.linked_camera_outlined)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.web_sharp)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.bubble_chart_outlined)),
+                ],
+              )
+
               //Floating Button
               /*Container(
                   child: FloatingActionButton(
@@ -209,12 +284,9 @@ class _Club_profileState extends State<Club_profile> {
                 child: Icon(Icons.chat_bubble_sharp),
               )
               ),*/
-        
             ],
           ),
         ),
-
-
       ],
     ));
   }

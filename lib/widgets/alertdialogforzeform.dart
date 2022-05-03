@@ -1,7 +1,8 @@
+import 'package:clubz/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '../helpers/postroutes.dart';
+import 'package:provider/provider.dart';
 
 class AlertForZeForm extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
   final _form = GlobalKey<FormState>();
   final caption = TextEditingController();
   final location = TextEditingController();
+  bool _isloading = false;
 
   Widget _createwidget(String text, TextEditingController name) {
     return Container(
