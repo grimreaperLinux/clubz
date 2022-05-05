@@ -10,7 +10,8 @@ const clubAuth = async (req, res, next) => {
         if(!user) {
             throw new Error();
         }
-        const club = await Club.findOne({owner: decode._id})
+        const club = await Club.findOne({_id: req.body.clubid, owner: user._id})
+        console.log(club)
         if(!club) {
             throw new Error();
         }

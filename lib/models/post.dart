@@ -1,3 +1,4 @@
+import 'package:clubz/models/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -14,18 +15,39 @@ class Post with ChangeNotifier {
   final String caption;
   final String id;
   final String imageLocOnCloud;
-  int likes;
-  int dislikes;
+  final List<dynamic> userlikes;
+  bool isliked;
+  int noOfLikes;
+  final String owner;
 
-  Post({
-    required this.postpic,
-    required this.location,
-    required this.caption,
-    required this.id,
-    required this.imageLocOnCloud,
-    this.likes = 0,
-    this.dislikes = 0,
-  });
+  Post(
+      {required this.postpic,
+      required this.location,
+      required this.caption,
+      required this.id,
+      required this.imageLocOnCloud,
+      this.isliked = false,
+      required this.userlikes,
+      this.noOfLikes = 0,
+      required this.owner});
+
+  Future<void> liked(String token) async {
+    isliked = !isliked;
+    var url = Uri.parse("http://10.0.1.60:3000/likepost/$id");
+    final res = await http.patch(
+      url,
+      body: json.encode({'liked': isliked}),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
+    final decoded = json.decode(res.body) as Map;
+    var listoflikes = decoded['likedUsers'] as List;
+    noOfLikes = listoflikes.length;
+    print(noOfLikes);
+    notifyListeners();
+  }
 }
 
 class PostList with ChangeNotifier {
@@ -37,8 +59,8 @@ class PostList with ChangeNotifier {
 
   final storage = FirebaseStorage.instance.ref();
 
-  Future<void> addpost(
-      PickedFile? _imageFile, String caption, String location) async {
+  Future<void> addpost(PickedFile? _imageFile, String caption, String location,
+      String token) async {
     if (_imageFile == null) return;
     final fileName = basename(File(_imageFile.path).path);
     final destination = 'images/$fileName';
@@ -55,7 +77,10 @@ class PostList with ChangeNotifier {
             'postpic': value,
             'imageLocOnCloud': destination
           }),
-          headers: {"Content-Type": "application/json"},
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $token',
+          },
         ).then((response) {
           var decodedResponse = json.decode(response.body) as Map;
           final newpost = Post(
@@ -63,7 +88,9 @@ class PostList with ChangeNotifier {
               location: decodedResponse['location'],
               caption: decodedResponse['caption'],
               id: decodedResponse['_id'],
-              imageLocOnCloud: decodedResponse['imageLocOnCloud']);
+              imageLocOnCloud: decodedResponse['imageLocOnCloud'],
+              userlikes: decodedResponse['likedUsers'],
+              owner: decodedResponse['owner']);
           _items.add(newpost);
           notifyListeners();
         });
@@ -79,14 +106,35 @@ class PostList with ChangeNotifier {
       var response = await http.get(url);
       var decodedresponse = json.decode(response.body) as List;
       print(decodedresponse);
+      final map = await UserList().getzepresentuser();
       decodedresponse.forEach(
-        (element) {
-          final post = Post(
+        (element) async {
+          final listoflikedusers = element['likedUsers'] as List<dynamic>;
+          var post;
+          if (listoflikedusers.contains(map['id'] as String)) {
+            post = Post(
               postpic: element['postpic'],
               location: element['location'],
               caption: element['caption'],
               id: element['_id'],
-              imageLocOnCloud: element['imageLocOnCloud']);
+              imageLocOnCloud: element['imageLocOnCloud'],
+              userlikes: element['likedUsers'],
+              isliked: true,
+              noOfLikes: element['likedUsers'].length,
+              owner: element['owner'],
+            );
+          } else {
+            post = Post(
+              postpic: element['postpic'],
+              location: element['location'],
+              caption: element['caption'],
+              id: element['_id'],
+              imageLocOnCloud: element['imageLocOnCloud'],
+              userlikes: element['likedUsers'],
+              noOfLikes: element['likedUsers'].length,
+              owner: element['owner'],
+            );
+          }
           _items.add(post);
           notifyListeners();
         },
@@ -96,7 +144,8 @@ class PostList with ChangeNotifier {
     }
   }
 
-  Future<void> updatePost(String id, Map<String, dynamic> newpost) async {
+  Future<void> updatePost(
+      String id, Map<String, dynamic> newpost, String token) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       if (newpost['editimage']) {
@@ -115,11 +164,14 @@ class PostList with ChangeNotifier {
           'postpic': downloadurl,
           'imageLocOnCloud': destination,
         };
-        final url = Uri.parse("http://10.0.1.60:3000/updatepost/$id");
+        final url = Uri.parse("http://192.168.211.44:3000/updatepost/$id");
         http.patch(
           url,
           body: json.encode(editedpost),
-          headers: {"Content-Type": "application/json"},
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $token',
+          },
         );
         _items[prodIndex] = Post(
           caption: editedpost['caption'],
@@ -127,6 +179,8 @@ class PostList with ChangeNotifier {
           postpic: editedpost['postpic'],
           imageLocOnCloud: editedpost['imageLocOnCloud'],
           id: id,
+          userlikes: _items[prodIndex].userlikes,
+          owner: _items[prodIndex].owner,
         );
         notifyListeners();
         print(downloadurl);
@@ -138,20 +192,24 @@ class PostList with ChangeNotifier {
         'location': newpost['location'],
       };
 
-      final url = Uri.parse("http://10.0.1.60:3000/updatepost/$id");
+      final url = Uri.parse("http://10.0.17.139:3000/updatepost/$id");
       http.patch(
         url,
         body: json.encode(editedpost),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
       );
 
       _items[prodIndex] = Post(
-        postpic: _items[prodIndex].postpic,
-        location: editedpost['location'],
-        caption: editedpost['caption'],
-        id: id,
-        imageLocOnCloud: _items[prodIndex].imageLocOnCloud,
-      );
+          postpic: _items[prodIndex].postpic,
+          location: editedpost['location'],
+          caption: editedpost['caption'],
+          id: id,
+          imageLocOnCloud: _items[prodIndex].imageLocOnCloud,
+          userlikes: _items[prodIndex].userlikes,
+          owner: _items[prodIndex].owner);
       notifyListeners();
       return;
     } else {
@@ -159,8 +217,8 @@ class PostList with ChangeNotifier {
     }
   }
 
-  Future<void> deleteProduct(String id) async {
-    final url = Uri.parse('http://10.0.1.60:3000/deletepost/$id');
+  Future<void> deleteProduct(String id, String token) async {
+    final url = Uri.parse('http://192.168.211.44:3000/deletepost/$id');
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     final desttobedeleted = existingProduct.imageLocOnCloud;
@@ -168,7 +226,9 @@ class PostList with ChangeNotifier {
     notifyListeners();
     final ref = storage.child(desttobedeleted);
     await ref.delete();
-    final response = await http.delete(url);
+    final response = await http.delete(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
       notifyListeners();

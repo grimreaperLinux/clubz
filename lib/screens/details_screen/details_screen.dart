@@ -1,10 +1,14 @@
+import 'package:clubz/widgets/createannouncement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../../models/club.dart';
 
 class DetailsScreen extends StatelessWidget {
   static const routename = '/details';
   @override
   Widget build(BuildContext context) {
+    final club = ModalRoute.of(context)!.settings.arguments as Club;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -49,8 +53,8 @@ class DetailsScreen extends StatelessWidget {
                 width: 320.w,
                 height: 200.h,
                 child: ClipRRect(
-                  child: Image.asset(
-                    'images/velo.jpeg',
+                  child: Image.network(
+                    club.clubpic,
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.all(
@@ -65,10 +69,25 @@ class DetailsScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: EdgeInsets.only(left: 10.w),
                 child: Text(
-                  'Velocity Club',
+                  club.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30.sp,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(left: 10.w),
+                child: Text(
+                  club.type,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20.sp,
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -80,7 +99,7 @@ class DetailsScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: EdgeInsets.only(left: 10.w),
                 child: Text(
-                  'I have built several Flutter application and can connect them to Restful APIs built with Nodejs, Express.js and Mongodb with ease. I can also build Flutter applications with Firebase and sometimes use both Node API and Firebase services for the features that I need in the application.',
+                  club.description,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15.sp,
@@ -92,7 +111,19 @@ class DetailsScreen extends StatelessWidget {
                 height: 15.h,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (
+                      BuildContext context,
+                    ) {
+                      return ChangeNotifierProvider.value(
+                        value: club,
+                        child: AnnouncementForm(),
+                      );
+                    },
+                  );
+                },
                 child: Text('Create a New Announcement'),
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

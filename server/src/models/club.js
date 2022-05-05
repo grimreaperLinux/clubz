@@ -11,13 +11,25 @@ const clubSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    motto: {
-        type: String,
-        default: "",
-    },
     description: {
         type: String,
         required: true,
+    },
+    members: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
+    announcements: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Announcement",
+    }],
+    profilepic: {
+        type: String,
+        required: true
+    },
+    type: {
+        required: true,
+        type: String
     }
 })
 

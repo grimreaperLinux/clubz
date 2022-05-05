@@ -1,4 +1,5 @@
 import 'package:clubz/models/post.dart';
+import 'package:clubz/models/user.dart';
 
 import '../widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,11 @@ class _PostsScreenState extends State<PostsScreen> {
 
   @override
   void didChangeDependencies() {
-    var posts = Provider.of<PostList>(context);
+    var posts = Provider.of<PostList>(context, listen: false);
+
     if (_isinit && posts.items.isEmpty) {
       Provider.of<PostList>(context).getposts();
+      Provider.of<UserList>(context).getallusers();
     }
     _isinit = false;
     super.didChangeDependencies();
@@ -29,6 +32,7 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   Widget build(BuildContext context) {
     final posts = Provider.of<PostList>(context);
+
     double heightofscreen = MediaQuery.of(context).size.height;
     double widthofscreen = MediaQuery.of(context).size.width;
     return Scaffold(

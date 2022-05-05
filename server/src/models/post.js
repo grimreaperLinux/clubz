@@ -14,6 +14,14 @@ const postSchema = mongoose.Schema({
     },
     imageLocOnCloud: {
         type: String,
+    },
+    likedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
     }
 })
 

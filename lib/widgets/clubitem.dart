@@ -1,3 +1,6 @@
+import 'package:clubz/models/club.dart';
+import 'package:provider/provider.dart';
+
 import '../screens/details_screen/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ClubItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final clubitem = Provider.of<Club>(context);
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, DetailsScreen.routename);
+        Navigator.pushNamed(context, DetailsScreen.routename,
+            arguments: clubitem);
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -26,8 +31,8 @@ class ClubItem extends StatelessWidget {
                 width: 200.w,
                 height: 200.h,
                 child: ClipRRect(
-                  child: Image.asset(
-                    'images/velo.jpeg',
+                  child: Image.network(
+                    clubitem.clubpic,
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.all(
@@ -40,12 +45,12 @@ class ClubItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Velocity',
+                    clubitem.name,
                     style:
                         TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
                   ),
                   Text(
-                    'Web Dev Club',
+                    clubitem.type,
                     style:
                         TextStyle(fontWeight: FontWeight.w400, fontSize: 15.sp),
                   ),

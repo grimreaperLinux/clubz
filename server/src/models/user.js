@@ -40,8 +40,16 @@ const userSchema = mongoose.Schema({
     trim: true,
   },
   profilepic: {
-    type: Buffer,
+    type: String,
   },
+  clubs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Club",
+  }],
+  posts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  }],
   tokens: [
     {
       token: {
@@ -52,7 +60,7 @@ const userSchema = mongoose.Schema({
   ],
 });
 
-userSchema.methods.generateAuthToken = async function() { 
+userSchema.methods.generateAuthToken = async function() { //this function is accessible to a instance of a model
   const user = this
   const token = jwt.sign({_id: user._id.toString()}, 'hehehe')
   user.tokens = user.tokens.concat({ token })

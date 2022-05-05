@@ -1,11 +1,32 @@
 import 'package:clubz/screens/settings.dart';
 import 'package:clubz/widgets/clubitem.dart';
+import 'package:clubz/widgets/form_for_club_creation.dart';
 import 'package:flutter/material.dart';
-import 'club_profile.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../models/club.dart';
+import '../models/user.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   static const routename = '/homepage';
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  var _isinit = true;
+
+  @override
+  void didChangeDependencies() {
+    var clubs = Provider.of<ClubList>(context, listen: false);
+
+    if (_isinit && clubs.items.isEmpty) {
+      Provider.of<ClubList>(context).getclubs();
+    }
+    _isinit = false;
+    super.didChangeDependencies();
+  }
 
   TextEditingController searchbar = TextEditingController();
 
@@ -61,10 +82,18 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final clublist = Provider.of<ClubList>(context);
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return FormForClub();
+              },
+            );
+          },
           isExtended: true,
           label: Text('Create Your Club'),
           backgroundColor: Colors.green,
@@ -98,9 +127,23 @@ class Homepage extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                ClubItem(),
-                ClubItem(),
-                ClubItem()
+                clublist.items.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'No CLubs',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          ...clublist.items.map(
+                            (item) => ChangeNotifierProvider.value(
+                              value: item,
+                              child: ClubItem(),
+                            ),
+                          ),
+                        ],
+                      )
               ],
             ),
           ),

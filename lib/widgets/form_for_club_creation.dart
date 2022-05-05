@@ -5,43 +5,24 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../models/user.dart';
+import '../models/club.dart';
 
-class AlertForZeForm extends StatefulWidget {
-  var toedit;
-  AlertForZeForm(this.toedit);
+class FormForClub extends StatefulWidget {
   @override
-  State<AlertForZeForm> createState() => _AlertForZeFormState();
+  State<FormForClub> createState() => _FormForClubState();
 }
 
-class _AlertForZeFormState extends State<AlertForZeForm> {
+class _FormForClubState extends State<FormForClub> {
   PickedFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
   final _form = GlobalKey<FormState>();
   bool _isloading = false;
-  var _isinit = true;
-  var caption = TextEditingController();
-  var location = TextEditingController();
-  var imageurl;
+  var type = TextEditingController();
+  var description = TextEditingController();
+  var name = TextEditingController();
   late Post toeditpost;
 
-  @override
-  void didChangeDependencies() {
-    if (_isinit) {
-      if (widget.toedit) {
-        toeditpost = Provider.of<Post>(context);
-        caption = TextEditingController(text: toeditpost.caption);
-        location = TextEditingController(text: toeditpost.location);
-        imageurl = toeditpost.postpic;
-      } else {
-        caption = TextEditingController();
-        location = TextEditingController();
-      }
-    }
-    _isinit = false;
-    super.didChangeDependencies();
-  }
-
-  Widget _createwidget(String text, TextEditingController name, String init) {
+  Widget _createwidget(String text, TextEditingController name) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -143,9 +124,8 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
 
   @override
   Widget build(BuildContext context) {
-    final postlist = Provider.of<PostList>(context);
     final users = Provider.of<UserList>(context);
-    final _toedit = widget.toedit;
+    final clubs = Provider.of<ClubList>(context);
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -173,7 +153,7 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Create Your Post',
+                            'Create Your Club',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 30),
                           ),
@@ -203,7 +183,7 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
                                             bottomSheet(context)),
                                       );
                                     },
-                                    child: _imageFile == null && !_toedit
+                                    child: _imageFile == null
                                         ? const Center(
                                             child: Text(
                                               'Select an Image',
@@ -218,11 +198,8 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               image: DecorationImage(
-                                                image: _imageFile != null
-                                                    ? FileImage(
-                                                        File(_imageFile!.path))
-                                                    : NetworkImage(imageurl)
-                                                        as ImageProvider,
+                                                image: FileImage(
+                                                    File(_imageFile!.path)),
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
@@ -233,12 +210,23 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.03,
                                 ),
-                                _createwidget('Ze Caption', caption, 'caption'),
+                                _createwidget(
+                                  'Name',
+                                  name,
+                                ),
                                 SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.03,
                                 ),
-                                _createwidget('Location', location, 'location'),
+                                _createwidget(
+                                  'Type',
+                                  type,
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.03,
+                                ),
+                                _createwidget('Description', description),
                                 SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.03,
@@ -250,39 +238,16 @@ class _AlertForZeFormState extends State<AlertForZeForm> {
                                     });
                                     final token =
                                         await users.getzepresentuser();
-                                    if (_toedit == false) {
-                                      await postlist
-                                          .addpost(
-                                              _imageFile,
-                                              caption.text,
-                                              location.text,
-                                              token['token'] as String)
-                                          .then((_) {
-                                        Navigator.of(context).pop();
-                                      });
-                                    } else {
-                                      Map<String, dynamic> editedPost = {};
-                                      if (_imageFile != null) {
-                                        editedPost = {
-                                          'caption': caption.text,
-                                          'location': location.text,
-                                          'image': _imageFile,
-                                          'editimage': true,
-                                        };
-                                      } else {
-                                        editedPost = {
-                                          'caption': caption.text,
-                                          'location': location.text,
-                                          'editimage': false,
-                                        };
-                                      }
-                                      await postlist
-                                          .updatePost(toeditpost.id, editedPost,
-                                              token['token'] as String)
-                                          .then((_) {
-                                        Navigator.of(context).pop();
-                                      });
-                                    }
+                                    await clubs
+                                        .addclub(
+                                            _imageFile,
+                                            name.text,
+                                            description.text,
+                                            type.text,
+                                            token['token'] as String)
+                                        .then((_) {
+                                      Navigator.of(context).pop();
+                                    });
                                   },
                                   child: const Text('Submit'),
                                   style: ButtonStyle(
