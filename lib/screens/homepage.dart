@@ -83,72 +83,97 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     final clublist = Provider.of<ClubList>(context);
+    final users = Provider.of<UserList>(context);
     return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return FormForClub();
-              },
-            );
-          },
-          isExtended: true,
-          label: Text('Create Your Club'),
-          backgroundColor: Colors.green,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20).r,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Good Morning',
-                      style: TextStyle(
-                          fontSize: 25.sp, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      iconSize: 25.r,
-                      onPressed: () {
-                        Navigator.pushNamed(context, Settings.routeName);
+      child: FutureBuilder<Object>(
+          future: users.getzepresentuser(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              final loggeduser = snapshot.data as Map;
+              return Scaffold(
+                floatingActionButton: FloatingActionButton.extended(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return FormForClub();
                       },
-                      icon: const Icon(Icons.settings),
-                    )
-                  ],
+                    );
+                  },
+                  isExtended: true,
+                  label: Text('Create Your Club'),
+                  backgroundColor: Colors.green,
                 ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                _createwidget('Search for Clubs', searchbar),
-                SizedBox(
-                  height: 20.h,
-                ),
-                clublist.items.isEmpty
-                    ? const Center(
-                        child: Text(
-                          'No CLubs',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          ...clublist.items.map(
-                            (item) => ChangeNotifierProvider.value(
-                              value: item,
-                              child: ClubItem(),
+                body: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20)
+                          .r,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Good Morning ,',
+                                  style: TextStyle(
+                                      fontSize: 25.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(loggeduser['name'],
+                                    style: TextStyle(
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.bold)),
+                              ],
                             ),
-                          ),
-                        ],
-                      )
-              ],
-            ),
-          ),
-        ),
-      ),
+                            IconButton(
+                              iconSize: 25.r,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, Settings.routeName);
+                              },
+                              icon: const Icon(Icons.settings),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        _createwidget('Search for Clubs', searchbar),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        clublist.items.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'No CLubs',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  ...clublist.items.map(
+                                    (item) => ChangeNotifierProvider.value(
+                                      value: item,
+                                      child: ClubItem(),
+                                    ),
+                                  ),
+                                ],
+                              )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          }),
     );
   }
 }

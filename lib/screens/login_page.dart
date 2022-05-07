@@ -2,7 +2,6 @@ import 'package:clubz/auth_helpers.dart';
 import 'package:clubz/screens/signup.dart';
 import 'package:clubz/widgets/switchscreens.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -122,18 +121,16 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 40.0),
                   ElevatedButton(
                     onPressed: () async {
-                      await AuthHelpers()
-                          .signin(email.text, password.text)
-                          .catchError(() async {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Wrong password'),
-                          ),
+                      try {
+                        await AuthHelpers().signin(email.text, password.text);
+                        Navigator.pushReplacementNamed(
+                            context, SwitchScreens.routename);
+                      } catch (e) {
+                        Scaffold.of(context).showSnackBar(
+                          const SnackBar(content: Text('Something went Wrong')),
                         );
                         return;
-                      });
-                      Navigator.pushReplacementNamed(
-                          context, SwitchScreens.routename);
+                      }
                     },
                     child: const Text('LOGIN'),
                     style: ButtonStyle(

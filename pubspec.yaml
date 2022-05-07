@@ -50,6 +50,7 @@ dependencies:
   flutter_screenutil: ^5.4.0+1
   firebase_auth: ^3.3.16
   flutter_login_facebook: ^1.4.1
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

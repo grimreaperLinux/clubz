@@ -1,6 +1,7 @@
-import 'package:clubz/models/aanouncement.dart';
+import 'package:clubz/models/anouncement.dart';
 import 'package:clubz/models/club.dart';
 import 'package:clubz/models/user.dart';
+import 'package:clubz/screens/club_announcements_screen.dart';
 import 'package:clubz/screens/details_screen/details_screen.dart';
 import 'package:clubz/screens/login_page.dart';
 import 'package:clubz/screens/settings.dart';
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasData) {
                 return SwitchScreens();
               } else {
-                return LoginPage();
+                return const LoginPage();
               }
             },
           ),
@@ -73,8 +74,10 @@ class _MyAppState extends State<MyApp> {
             DetailsScreen.routename: (context) => DetailsScreen(),
             Settings.routeName: (context) => Settings(),
             SignUp.routename: (context) => SignUp(),
-            LoginPage.routename: (context) => LoginPage(),
+            LoginPage.routename: (context) => const LoginPage(),
             SwitchScreens.routename: (context) => SwitchScreens(),
+            ClubAnnouncementScreen.routename: (context) =>
+                ClubAnnouncementScreen()
           },
         ),
       ),

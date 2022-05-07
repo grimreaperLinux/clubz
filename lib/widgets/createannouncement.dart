@@ -1,4 +1,4 @@
-import 'package:clubz/models/aanouncement.dart';
+import 'package:clubz/models/anouncement.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +73,7 @@ class _AnnouncementFormState extends State<AnnouncementForm> {
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       content: Container(
-        height: 365.h,
+        height: 210.h,
         width: MediaQuery.of(context).size.width,
         child: _isloading
             ? Column(

@@ -69,9 +69,9 @@ class Settings extends StatelessWidget {
     final users = Provider.of<UserList>(context);
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(10.0).r,
-        child: FutureBuilder<Object>(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0).r,
+          child: FutureBuilder<Object>(
             future: users.getzepresentuser(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
@@ -130,57 +130,10 @@ class Settings extends StatelessWidget {
                   ],
                 );
               }
-              return Column(
-                children: [
-                  Center(
-                      child: Text(
-                    'Settings',
-                    style:
-                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700),
-                  )),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  profilepic(),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Center(
-                      child: Text(
-                    'Aniket Raj',
-                    style:
-                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-                  )),
-                  Center(
-                      child: Text(
-                    'ani9431619703@gmail.com',
-                    style:
-                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
-                  )),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                  profileMenu(Icons.account_circle, 'Account', null),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  profileMenu(Icons.bookmark, 'Saved Posts', null),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  profileMenu(Icons.timelapse, 'Your Posts', null),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  profileMenu(Icons.logout_outlined, 'Logout', () async {
-                    await AuthHelpers().signOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        LoginPage.routename, (Route<dynamic> route) => false);
-                  }),
-                ],
-              );
-            }),
-      )),
+            },
+          ),
+        ),
+      ),
     );
   }
 }

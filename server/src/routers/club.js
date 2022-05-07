@@ -14,7 +14,11 @@ router.post("/newClub", auth, async (req, res) => {
 
 router.post("/userjoinsclub", auth, async(req, res) => {
     try{
-        const club = await Club.findById(req.club)
+        const club = await Club.findById(req.body.clubid)
+        if(club.members.includes(req.user._id)){
+            console.log(hello)
+            res.status(400)
+        }
         club.members.push(req.user._id)
         await club.save()
         req.user.clubs.push(club._id)
@@ -25,9 +29,10 @@ router.post("/userjoinsclub", auth, async(req, res) => {
     }
 })
 
-router.get("/getmembers", async(req, res) => {
+router.get("/getmembers/:clubid", async(req, res) => {
     try {
-        const club = await req.findById(req.clubid)
+        console.log(route.hit)
+        const club = await req.findById(req.params.clubid)
         if(club == null){
             res.status(400)
         }
@@ -48,8 +53,11 @@ router.post("/announcement", clubAuth, async (req, res) => {
 
 router.get("/getClubAnnouncement/:clubid", async (req, res) => {
     const club = await Club.findById(req.params.clubid)
-    const announces = await club.populate['announcements']
+    console.log(club)
+    const announces = await club.populate('announcements')
+    console.log(announces)
     res.send(announces.announcements)
+    // res.send()
 })
 
 router.get("/getUserannouncements", auth, async (req, res) => {

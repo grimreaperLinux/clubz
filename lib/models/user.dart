@@ -98,10 +98,55 @@ class UserList with ChangeNotifier {
     );
     final decodedresponse = json.decode(res.body) as Map;
     return User(
-        name: decodedresponse['name'],
-        email: decodedresponse['email'],
-        username: decodedresponse['username'],
-        id: decodedresponse['_id'],
-        clubs: decodedresponse['clubs']);
+      name: decodedresponse['name'],
+      email: decodedresponse['email'],
+      username: decodedresponse['username'],
+      id: decodedresponse['_id'],
+      clubs: decodedresponse['clubs'],
+    );
+  }
+
+  Future<void> userjoinsclub(String clubid, String token) async {
+    var url = Uri.parse("http://10.0.1.60:3000/userjoinsclub");
+    final res = await http.post(
+      url,
+      body: json.encode({'clubid': clubid}),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (res.statusCode == 400) {
+      throw Error();
+    }
+  }
+
+  Future<List<String>> clubusers(String clubid) async {
+    print(clubid);
+    var url = Uri.parse("http://10.0.1.60:3000/getmembers/$clubid");
+    var response = await http.get(url);
+    var decodedresponse = json.decode(response.body) as List;
+    List<String> users = [];
+    decodedresponse.forEach((element) {
+      final user = User(
+        name: element['name'],
+        email: element['email'],
+        username: element['username'],
+        id: element['_id'],
+        clubs: element['clubs'],
+      );
+      users.add(user.id);
+    });
+    print(users);
+    return users;
+  }
+
+  Future<Map<String, dynamic>> gettingtworesults(String clubid) async {
+    final user = await getzepresentuser();
+    final userlist = await clubusers(clubid);
+    return {
+      "loggeduser": user,
+      "userlist": userlist,
+    };
   }
 }
