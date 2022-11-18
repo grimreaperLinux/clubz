@@ -6,6 +6,7 @@ import 'package:clubz/screens/details_screen/details_screen.dart';
 import 'package:clubz/screens/login_page.dart';
 import 'package:clubz/screens/settings.dart';
 import 'package:clubz/screens/signup.dart';
+import 'package:clubz/screens/splash_screen.dart';
 import 'package:clubz/widgets/switchscreens.dart';
 import './screens/homepage.dart';
 import './models/post.dart';
@@ -23,7 +24,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(SplashScreen());
 }
 
 class MyApp extends StatefulWidget {
@@ -49,38 +50,39 @@ class _MyAppState extends State<MyApp> {
           create: (_) => AnnouncementList(),
         )
       ],
-      child: ScreenUtilInit(
+        child: ScreenUtilInit(
         designSize: const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (_) => MaterialApp(
-          theme: ThemeData(fontFamily: 'Lato'),
-          debugShowCheckedModeBanner: false,
-          home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.hasData) {
-                return SwitchScreens();
-              } else {
-                return const LoginPage();
-              }
-            },
-          ),
-          // home: LoginPage(),
-          routes: {
-            Homepage.routename: (context) => Homepage(),
-            PostsScreen.routename: (context) => PostsScreen(),
-            AnnouncementScreen.routename: (context) => AnnouncementScreen(),
-            DetailsScreen.routename: (context) => DetailsScreen(),
-            Settings.routeName: (context) => Settings(),
-            SignUp.routename: (context) => SignUp(),
-            LoginPage.routename: (context) => const LoginPage(),
-            SwitchScreens.routename: (context) => SwitchScreens(),
-            ClubAnnouncementScreen.routename: (context) =>
-                ClubAnnouncementScreen()
+    minTextAdapt: true,
+    splitScreenMode: true,
+    builder: (context , child) {
+      return MaterialApp(
+        theme: ThemeData(fontFamily: 'Lato'),
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.hasData) {
+              return SwitchScreens();
+            } else {
+              return const LoginPage();
+            }
           },
         ),
-      ),
-    );
+        // home: LoginPage(),
+        routes: {
+          Homepage.routename: (context) => Homepage(),
+          PostsScreen.routename: (context) => PostsScreen(),
+          AnnouncementScreen.routename: (context) => AnnouncementScreen(),
+          DetailsScreen.routename: (context) => DetailsScreen(),
+          Settings.routeName: (context) => Settings(),
+          SignUp.routename: (context) => SignUp(),
+          LoginPage.routename: (context) => const LoginPage(),
+          SwitchScreens.routename: (context) => SwitchScreens(),
+          ClubAnnouncementScreen.routename: (context) =>
+              ClubAnnouncementScreen()
+        },
+      );
+    }),
+     );
   }
 }
